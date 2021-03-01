@@ -1,0 +1,7 @@
+pandas
+dostoevsky
+numpy
+wordcloud
+matplotlib
+tweepy
+textblob
