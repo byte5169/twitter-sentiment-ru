@@ -105,6 +105,24 @@ name = "tutby"
 
 # print(d)
 
+# currently there is a bug, you need to enter correct number twice
+# def handle_count_validation(m):
+#     cid = m.chat.id
+#     global number_tweets
+#     number_tweets = m.text
+#     try:
+#         if int(number_tweets) >= 20:
+#             bot.send_message(
+#                 cid,
+#                 "Number should be less than 20. *currently there is a bug, you need to enter correct number twice*",
+#             )
+#             bot.register_next_step_handler(m, handle_count_validation)
+#         else:
+#             bot.register_next_step_handler(m, handle_twitter_info)
+#     except ValueError:
+#         bot.send_message(cid, "Please use numbers.")
+#         bot.register_next_step_handler(m, handle_count_validation)
+
 d = {
     "Как пойдет транспорт в Минске в понедельник, 8 марта?\n\nРассказываем. https://t.co/Vt5eA9JCRB https://t.co/dkLBEM5bAg": [
         "@tutby А главное куда..."

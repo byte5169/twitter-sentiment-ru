@@ -8,7 +8,9 @@ from processing.data import clean_txt
 
 
 def main():
-    get_tweets("tutby", 200, "ru", csv_path="data/tweets_tutby.csv")
+    get_tweets("tutby", 200, "ru").to_csv(
+        "data/tweets_tutby.csv", index=False, mode="w+"
+    )
 
     df = pd.DataFrame(load_clean_data_to_df("data/tweets_tutby.csv"))
 

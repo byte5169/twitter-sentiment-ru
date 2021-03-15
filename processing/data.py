@@ -14,9 +14,7 @@ access_token = os.getenv("access_token")
 access_token_secret = os.getenv("access_token_secret")
 
 
-def get_tweets(
-    screen_name, tweet_count=100, lang="en", tweet_mode="extended", csv_path="temp.csv"
-):
+def get_tweets(screen_name, tweet_count=100, lang="en", tweet_mode="extended"):
     """
     saves twitter posts in a CSV file
 
@@ -24,7 +22,7 @@ def get_tweets(
     :tweet_count: number of tweets to load \n
     :lang: tweet language \n
     :tweet_mode: tweet mode \n
-    :csv_path: path to save CSV file
+    :return: a dataframe
     """
     authenticate = tweepy.OAuthHandler(api_key, api_secret)
     authenticate.set_access_token(access_token, access_token_secret)
@@ -36,7 +34,7 @@ def get_tweets(
 
     df = pd.DataFrame([tweet.full_text for tweet in posts], columns=["Tweets"])
 
-    df.to_csv(csv_path, mode="w+", index=False)
+    return df
 
 
 def get_tweet_replies(
