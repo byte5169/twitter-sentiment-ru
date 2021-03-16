@@ -10,7 +10,8 @@ sys.path.insert(0, parentdir)
 
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from processing.sentiment import get_sentiment_list, get_sentiment_string
+from processing.sentiment import get_sentiment_string
+from processing.data import get_tweets, clean_txt
 
 
 """
@@ -51,7 +52,7 @@ Start command
 def start(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="""Please type /text followed by a text to get sentiment for that line. Example "/text Привет ублюдок!" """,
+        text="""Type /text followed by a text to get sentiment for that line. \nExample "/text Привет ублюдок!" \nType /tweets followed by a twitter profile name to get sentiment for the latest 10 tweets. \nExample "/tweets tutby". \nNB! Works only for RU accounts and RU language. """,
     )
 
 
@@ -68,6 +69,25 @@ def text_sentiment(update, context):
 
 
 """
+twitter_sentiment_handler
+Sentiment for the latest 10 tweets of the given account name 
+"""
+
+
+def tweet_sentiment(update, context):
+    screen_name = (context.args)[0]
+    tweets = get_tweets(screen_name=screen_name, tweet_count=10, lang="ru")
+    tweet_list = tweets["Tweets"].tolist()
+    for t in tweet_list:
+        clean_t = clean_txt(t)
+        sentiment_tweet = get_sentiment_string(clean_t)
+        text = (
+            f"Original tweet: \n \n {t} \n \n Sentiment results: \n {sentiment_tweet}"
+        )
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+
+
+"""
 Main function
 """
 
@@ -79,6 +99,7 @@ def main() -> None:
 
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("text", text_sentiment))
+    dispatcher.add_handler(CommandHandler("tweets", tweet_sentiment))
     dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
     # Bot start/stop
